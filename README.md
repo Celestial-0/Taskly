@@ -2,32 +2,41 @@
 
 ## 📌 Overview
 
-**Taskly** is an **open-source, AI-powered task management app** built with **React Native**.
-It helps you **capture, organize, and manage tasks** from text, voice, or images—while AI automatically **categorizes and summarizes** them for you.
+**Taskly** is an **open-source, AI-powered task management app** built with **React Native** and **Expo**.
+It helps you **capture, organize, and manage tasks** with AI-powered categorization and a modern, offline-first approach.
 
-Designed to be **local-first**, **extensible**, and **community-driven**, Taskly is the productivity companion for **students, developers, and teams** who value openness and portability.
+Designed to be **local-first**, **extensible**, and **community-driven**, Taskly is the productivity companion for **students, developers, and teams** who value simplicity, speed, and data portability.
+
+**Current Version:** `1.0.0` (MVP Release)
 
 ---
 
 ## ✨ Features
 
-* 📝 **Smart Task Capture** – Add tasks via text, voice, or OCR (images).
-* 🤖 **AI-Powered Organization** – Auto-categorization and summarization of tasks.
-* 📂 **Data Portability** – Export and import tasks in JSON/Markdown.
-* 📱 **Cross-Platform** – Built with React Native (iOS + Android support).
-* 🌙 **Modern UI/UX** – Powered by Nativewind with light/dark mode.
-* 🔌 **Extensible** – Plugin system for community-driven integrations.
-* 📶 **Local-First with Optional Cloud Sync** – Works offline, syncs with Supabase/Postgres if needed.
+### 🎯 MVP Features (v1.0.0)
+* 📝 **Core Task Management** – Create, update, complete, and delete tasks
+* 💾 **Offline-First Storage** – Expo SQLite + Drizzle ORM with AsyncStorage fallback
+* 🤖 **AI-Powered Categorization** – Auto-categorize tasks (Work, Study, Personal, etc.)
+* 📤📥 **Import/Export** – Backup and restore tasks in JSON/CSV format
+* 🌙 **Modern UI/UX** – Clean interface with dark mode support
+* 📱 **Cross-Platform** – iOS, Android, and Web support via Expo
+
+### 🚀 Coming Soon
+* 📸 **OCR Input** – Scan handwritten notes and convert to tasks
+* 🎙️ **Voice Input** – Create tasks via speech-to-text
+* 🔄 **Cloud Sync** – Multi-device synchronization with Supabase
+* 🔌 **Plugin System** – Community-driven extensions
 
 ---
 
 ## 🛠️ Tech Stack
 
-* **Frontend:** [React Native](https://reactnative.dev/) + [Nativewind](https://www.nativewind.dev/)
-* **Database:** SQLite / AsyncStorage (offline-first)
+* **Frontend:** [React Native](https://reactnative.dev/) + [Expo Router](https://docs.expo.dev/router/)
+* **Styling:** [Nativewind](https://www.nativewind.dev/) + [RN Primitives](https://rn-primitives.vercel.app/)
+* **Database:** [Expo SQLite](https://docs.expo.dev/versions/latest/sdk/sqlite/) + [Drizzle ORM](https://orm.drizzle.team/)
+* **State Management:** [Zustand](https://zustand-demo.pmnd.rs/)
 * **Cloud Sync (optional):** [Supabase](https://supabase.com/)
 * **AI:** [OpenAI API](https://platform.openai.com/) (categorization & summarization)
-* **OCR:** [Tesseract.js](https://github.com/naptha/tesseract.js) or [Google ML Kit](https://developers.google.com/ml-kit)
 
 ---
 
@@ -35,18 +44,15 @@ Designed to be **local-first**, **extensible**, and **community-driven**, Taskly
 
 ```
 taskly/
-├── app/             # Main entry point
+├── app/             # Expo Router pages & main entry point
 ├── components/      # Reusable UI components
-│   ├── core/        # Core components (Screens & Layouts)
-│   ├── ui/          # UI components from npx @react-native-reusables/cli@latest add 
-├── hooks/           # Custom React hooks
-├── services/        # API, AI, OCR, and DB logic
-├── plugins/         # Community plugin integrations
-├── utils/           # Helper functions
-└── styles/          # Theme and global styles
-├── assets/              # Images, icons, fonts
-├── docs/                # Documentation files
-├── tests/               # Unit and integration tests
+│   ├── core/        # Core app components (Screens & Layouts)
+│   └── ui/          # UI primitives (from @rn-primitives)
+├── services/        # API, AI, OCR, and database logic
+├── models/          # Database schemas (Drizzle ORM)
+├── lib/             # Utilities and helper functions
+├── assets/          # Images, icons, fonts
+├── db/              # Database migrations and setup
 ├── package.json
 └── README.md
 ```
@@ -58,34 +64,46 @@ taskly/
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/YOUR_GITHUB/taskly.git
+git clone https://github.com/Celestial-0/taskly.git
 cd taskly
 ```
 
-### 2. Install Dependencies
+### 2. Navigate to Project Directory
+
+```bash
+cd taskly
+```
+
+### 3. Install Dependencies
 
 ```bash
 npm install
 ```
 
-### 3. Run the App
+### 4. Environment Setup
+
+Create a `.env` file in the `taskly/` directory:
 
 ```bash
+OPENAI_API_KEY=your_openai_api_key
+SUPABASE_URL=your_supabase_url (optional)
+SUPABASE_KEY=your_supabase_key (optional)
+```
+
+### 5. Run the App
+
+```bash
+# Development server
+npm run dev
+
 # Android
 npm run android
 
 # iOS
 npm run ios
-```
 
-### 4. Environment Setup
-
-Create a `.env` file in the root:
-
-```bash
-OPENAI_API_KEY=your_openai_api_key
-SUPABASE_URL=your_supabase_url
-SUPABASE_KEY=your_supabase_key
+# Web
+npm run web
 ```
 
 ---
@@ -164,12 +182,18 @@ Long-term vision: Taskly as an **AI-powered open productivity hub**:
 
 ---
 
-## 🧪 Testing
-
-Run unit and integration tests:
+## 🧪 Testing & Development
 
 ```bash
-npm run test
+# Type checking
+npx tsc --noEmit
+
+# Code formatting
+npx prettier --check .
+npx prettier --write .
+
+# Clean build
+npm run clean
 ```
 
 ---
