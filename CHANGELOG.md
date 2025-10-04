@@ -16,6 +16,7 @@ This project follows **[Semantic Versioning](https://semver.org/)**.
 - **fix**: Replace crash-prone custom header with native Expo Router navigation header
 - **fix**: Normalize category names to lowercase for consistent data handling
 - **fix**: Improve task initialization logic to prevent duplicate database calls
+- **fix**: Prevent rapid theme toggle issues with debouncing and state management
 
 ### ♻️ Refactoring
 - **refactor**: Move AppProvider from lib/ to components/provider/ for better project structure
