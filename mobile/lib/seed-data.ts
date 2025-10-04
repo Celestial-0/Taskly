@@ -32,29 +32,29 @@ export async function seedDatabase() {
     const personalCategory = allCategories.find(c => c.name === 'Personal');
     const learningCategory = allCategories.find(c => c.name === 'Learning');
 
-    // Create sample tasks
+    // Create tutorial/onboarding tasks (App 101)
     console.log('Creating tasks...');
     const sampleTasks = [
       {
-        title: 'Complete project proposal',
-        description: 'Write and submit the Q4 project proposal',
+        title: '👋 Welcome to Taskly!',
+        description: 'Tap this task to mark it complete. Tap the + button to create new tasks with categories and priorities.',
         completed: false,
         priority: 'high' as const,
-        categoryId: workCategory?.id || null,
-      },
-      {
-        title: 'Buy groceries',
-        description: 'Milk, bread, eggs, and vegetables',
-        completed: false,
-        priority: 'low' as const,
         categoryId: personalCategory?.id || null,
       },
       {
-        title: 'Learn React Native',
-        description: 'Complete the React Native tutorial',
+        title: '🤖 AI-powered organization',
+        description: 'When creating tasks, AI automatically suggests categories and priorities based on your task description. You can also customize them!',
+        completed: false,
+        priority: 'medium' as const,
+        categoryId: learningCategory?.id || null,
+      },
+      {
+        title: '🎯 Stay organized',
+        description: 'Use filters to view tasks by status or category. Sort by time or priority. Delete these tutorial tasks when ready and start organizing your life! 🎉',
         completed: false,
         priority: 'low' as const,
-        categoryId: learningCategory?.id || null,
+        categoryId: workCategory?.id || null,
       },
     ];
 
@@ -71,10 +71,7 @@ export async function seedDatabase() {
 
     // Mark first launch as completed after successful seeding
     await markFirstLaunchCompleted();
-    
-    // Mark first launch as completed after successful seeding
-    await markFirstLaunchCompleted();
-    
+
     console.log('✅ Demo data seeded successfully with', sampleTasks.length, 'tasks');
     console.log('🎉 First launch initialization completed');
   } catch (error) {
@@ -99,42 +96,28 @@ export async function seedDemoDataManually(): Promise<{ success: boolean; messag
     const personalCategory = allCategories.find(c => c.name === 'Personal');
     const learningCategory = allCategories.find(c => c.name === 'Learning');
 
-    // Create sample tasks
+    // Create tutorial/onboarding tasks (App 101)
     const sampleTasks = [
       {
-        title: '📋 Complete project proposal',
-        description: 'Write and submit the Q4 project proposal with detailed timeline',
+        title: '👋 Welcome to Taskly!',
+        description: 'Tap this task to mark it complete. Tap the + button to create new tasks with categories and priorities.',
         completed: false,
         priority: 'high' as const,
-        categoryId: workCategory?.id || null,
-      },
-      {
-        title: '🛒 Buy groceries',
-        description: 'Milk, bread, eggs, vegetables, and fruits for the week',
-        completed: false,
-        priority: 'low' as const,
         categoryId: personalCategory?.id || null,
       },
       {
-        title: '📱 Learn React Native',
-        description: 'Complete the React Native tutorial and build a sample app',
+        title: '🤖 AI-powered organization',
+        description: 'When creating tasks, AI automatically suggests categories and priorities based on your task description. You can also customize them!',
         completed: false,
-        priority: 'low' as const,
-        categoryId: learningCategory?.id || null,
-      },
-      {
-        title: '💪 Morning workout',
-        description: '30-minute cardio and strength training session',
-        completed: true,
         priority: 'medium' as const,
-        categoryId: personalCategory?.id || null,
+        categoryId: learningCategory?.id || null,
       },
       {
-        title: '📚 Read productivity book',
-        description: 'Finish reading "Getting Things Done" by David Allen',
+        title: '🎯 Stay organized',
+        description: 'Use filters to view tasks by status or category. Sort by time or priority. Delete these tutorial tasks when ready and start organizing your life! 🎉',
         completed: false,
         priority: 'low' as const,
-        categoryId: learningCategory?.id || null,
+        categoryId: workCategory?.id || null,
       },
     ];
 
@@ -151,8 +134,8 @@ export async function seedDemoDataManually(): Promise<{ success: boolean; messag
 
     return {
       success: tasksCreated > 0,
-      message: tasksCreated > 0 
-        ? `Successfully added ${tasksCreated} demo tasks!` 
+      message: tasksCreated > 0
+        ? `Successfully added ${tasksCreated} demo tasks!`
         : 'Failed to add demo tasks',
       tasksCreated,
     };

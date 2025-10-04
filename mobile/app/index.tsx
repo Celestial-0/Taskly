@@ -1,66 +1,33 @@
+import * as React from 'react';
+import { View } from 'react-native';
+import { Stack, Link } from 'expo-router';
+import { useColorScheme } from 'nativewind';
+import { MoonStarIcon, SunIcon, SettingsIcon, SparklesIcon } from 'lucide-react-native';
+import { THEME } from '@/lib/theme';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
 import { Badge } from '@/components/ui/badge';
 import { Text } from '@/components/ui/text';
-import { Stack, Link } from 'expo-router';
-import { MoonStarIcon, SunIcon, SettingsIcon, SparklesIcon } from 'lucide-react-native';
-import { useColorScheme } from 'nativewind';
-import * as React from 'react';
-import { View } from 'react-native';
-import { TaskList } from '@/components/core/task-list';
-import { useTheme } from '@react-navigation/native';
+import { Main } from '@/components/core/main';
 
-export default function Screen() {
-  return (
-    <>
-      <Stack.Screen 
-        options={{
-          title: '',
-          headerShown: false, // Hide the header completely to avoid the crash
-        }} 
-      />
-      <View className="flex-1 bg-background">
-        {/* Custom header that won't crash */}
-        <CustomHeader />
-        <TaskList />
-      </View>
-    </>
-  );
-}
-
+// --------------------
+// CONSTANTS
+// --------------------
 const THEME_ICONS = {
   light: SunIcon,
   dark: MoonStarIcon,
 };
 
-// Custom header component that replaces the navigation header
-const CustomHeader = React.memo(() => {
-  const { colorScheme } = useColorScheme();
-  const theme = useTheme();
-  
-  return (
-    <View 
-      className="flex-row items-center justify-between px-4 py-3 border-b border-border"
-      style={{ 
-        backgroundColor: theme.colors.card,
-        paddingTop: 48, // Account for status bar
-      }}>
-      <HeaderTitle />
-      <HeaderActions />
-    </View>
-  );
-});
-
-const ThemeToggle = React.memo(() => {
+// --------------------
+// THEME TOGGLE
+// --------------------
+function ThemeToggle() {
   const { colorScheme, toggleColorScheme } = useColorScheme();
-  const theme = useTheme();
   const [isToggling, setIsToggling] = React.useState(false);
 
   const handleToggle = React.useCallback(() => {
-    if (isToggling) return; // Prevent rapid toggling
-    
+    if (isToggling) return;
     setIsToggling(true);
-    // Add a small delay to ensure proper state management
     requestAnimationFrame(() => {
       toggleColorScheme();
       setTimeout(() => setIsToggling(false), 100);
@@ -74,35 +41,76 @@ const ThemeToggle = React.memo(() => {
       variant="ghost"
       className="rounded-full"
       disabled={isToggling}>
-      <Icon as={THEME_ICONS[colorScheme ?? 'light']} className="size-5" color={theme.colors.text} />
+      <Icon
+        as={THEME_ICONS[colorScheme ?? 'light']}
+        className="size-5 text-foreground"
+      />
     </Button>
   );
-});
+}
 
-const HeaderTitle = React.memo(() => {
-  const theme = useTheme();
+// --------------------
+// HEADER ACTIONS
+// --------------------
+function HeaderActions() {
   return (
-    <View className="flex-row items-center gap-2">
-      <Icon as={SparklesIcon} className="size-6" color={theme.colors.primary} />
-      <View>
-        <Badge variant="default" className="">
-          <Text className="text-xs font-bold">Taskly</Text>
-        </Badge>
-      </View>
-    </View>
-  );
-});
-
-const HeaderActions = React.memo(() => {
-  const theme = useTheme();
-  return (
-    <View className="flex-row gap-1">
+    <View className="flex-row gap-1 pr-2">
       <Link href="/settings" asChild>
         <Button size="icon" variant="ghost" className="rounded-full">
-          <Icon as={SettingsIcon} className="size-5" color={theme.colors.text} />
+          <Icon as={SettingsIcon} className="size-5 text-foreground" />
         </Button>
       </Link>
       <ThemeToggle />
     </View>
   );
-});
+}
+
+// --------------------
+// HEADER TITLE
+// --------------------
+function HeaderTitle() {
+  return (
+    <View className="flex-row items-center gap-2 pl-2">
+      <Icon as={SparklesIcon} className="size-6 text-primary" />
+      <Badge variant="default">
+        <Text className="text-xs font-bold">Taskly</Text>
+      </Badge>
+    </View>
+  );
+}
+
+// --------------------
+// SCREEN OPTIONS
+// --------------------
+const SCREEN_OPTIONS = {
+  light: {
+    title: '',
+    headerTitle: () => <HeaderTitle />,
+    headerRight: () => <HeaderActions />,
+    headerShadowVisible: true,
+    headerStyle: { backgroundColor: THEME.light.background  },
+  },
+  dark: {
+    title: '',
+    headerTitle: () => <HeaderTitle />,
+    headerRight: () => <HeaderActions />,
+    headerShadowVisible: true,
+    headerStyle: { backgroundColor: THEME.dark.background },
+  },
+};
+
+// --------------------
+// MAIN SCREEN
+// --------------------
+export default function Screen() {
+  const { colorScheme } = useColorScheme();
+
+  return (
+    <>
+      <Stack.Screen options={SCREEN_OPTIONS[colorScheme ?? 'light']} />
+      <View className="flex-1 bg-background" key={`screen-${colorScheme}`}>
+        <Main />
+      </View>
+    </>
+  );
+}

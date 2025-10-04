@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { View, ScrollView } from 'react-native';
 import { Text } from '@/components/ui/text';
 import { Button } from '@/components/ui/button';
@@ -6,24 +6,32 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ErrorBoundary } from '@/components/ui/error-boundary';
 import { Icon } from '@/components/ui/icon';
-import { PlusIcon, TrashIcon, FilterIcon } from 'lucide-react-native';
+import { PlusIcon, TrashIcon, FilterIcon, ClockIcon, ArrowUpIcon } from 'lucide-react-native';
 
 import { Task } from '@/lib/types';
 import { useStore } from '@/lib/store';
 import { TaskItem } from './task-item';
 import { TaskForm } from './task-form';
 
-type FilterType = 'all' | 'active' | 'completed' | string; // Allow any string for dynamic categories
+type FilterType = 'all' | 'active' | 'completed' | string;
+type SortType = 'time' | 'priority';
 
-function TaskListContent() {
+const TaskListContent = React.memo(function TaskListContent() {
   const { tasks, isLoading, error, loadTasks, loadCategories, clearCompleted, getAllCategories } = useStore();
   const [showForm, setShowForm] = useState(false);
   const [editingTask, setEditingTask] = useState<Task | undefined>();
   const [filter, setFilter] = useState<FilterType>('all');
+  const [sortBy, setSortBy] = useState<SortType>('priority');
+  const isMountedRef = useRef(true);
+  const isInitializedRef = useRef(false);
 
   // Load tasks and categories on mount
   useEffect(() => {
+    isMountedRef.current = true;
+    
     const initialize = async () => {
+      if (isInitializedRef.current) return;
+      
       try {
         console.log('Initializing task list...');
         
@@ -38,58 +46,106 @@ function TaskListContent() {
           console.log('Database is healthy. Tables:', healthCheck.tables);
         }
         
+        if (!isMountedRef.current) return;
+        
         await loadCategories();
+        if (!isMountedRef.current) return;
+        
         await loadTasks();
+        if (!isMountedRef.current) return;
+        
+        isInitializedRef.current = true;
         console.log('Task list initialized successfully');
       } catch (error) {
         console.error('Failed to initialize task list:', error);
       }
     };
+    
     initialize();
-  }, [loadTasks, loadCategories]);
+    
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
 
-  const filteredTasks = tasks.filter((task) => {
-    try {
-      switch (filter) {
-        case 'all':
-          return true;
-        case 'active':
-          return task.completed === false;
-        case 'completed':
-          return task.completed === true;
-        default:
-          // For dynamic categories, match the category name
-          return task.category === filter;
+  // Memoize filtered and sorted tasks to prevent unnecessary recalculations
+  const filteredTasks = useMemo(() => {
+    // First, filter tasks
+    const filtered = tasks.filter((task) => {
+      try {
+        switch (filter) {
+          case 'all':
+            return true;
+          case 'active':
+            return task.completed === false;
+          case 'completed':
+            return task.completed === true;
+          default:
+            // For dynamic categories, match the category name
+            return task.category === filter;
+        }
+      } catch (error) {
+        console.error('Error filtering task:', task, error);
+        return false;
       }
-    } catch (error) {
-      console.error('Error filtering task:', task, error);
-      return false;
-    }
-  });
+    });
 
-  const activeTasks = tasks.filter(task => task.completed === false).length;
-  const completedTasks = tasks.filter(task => task.completed === true).length;
+    // Then, sort tasks
+    const sorted = [...filtered].sort((a, b) => {
+      if (sortBy === 'priority') {
+        // Sort by priority first (high > medium > low), then by time (newest first)
+        const priorityOrder = { high: 3, medium: 2, low: 1 };
+        const aPriority = priorityOrder[a.priority || 'low'];
+        const bPriority = priorityOrder[b.priority || 'low'];
+        
+        if (aPriority !== bPriority) {
+          return bPriority - aPriority; // Higher priority first
+        }
+        // If same priority, sort by time (newest first)
+        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+      } else {
+        // Sort by time only (newest first)
+        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+      }
+    });
 
+    return sorted;
+  }, [tasks, filter, sortBy]);
 
+  // Memoize task counts to prevent unnecessary recalculations
+  const { activeTasks, completedTasks } = useMemo(() => ({
+    activeTasks: tasks.filter(task => task.completed === false).length,
+    completedTasks: tasks.filter(task => task.completed === true).length,
+  }), [tasks]);
 
-  const handleAddTask = () => {
+  // Memoize category filters to prevent re-renders
+  const categoryFilters = useMemo(() => {
+    const allCategories = getAllCategories();
+    return allCategories.map(category => ({
+      key: category,
+      label: category.charAt(0).toUpperCase() + category.slice(1),
+      count: tasks.filter(t => t.category === category).length,
+    })).filter(f => f.count > 0);
+  }, [tasks, getAllCategories]);
+
+  const handleAddTask = useCallback(() => {
     setEditingTask(undefined);
     setShowForm(true);
-  };
+  }, []);
 
-  const handleEditTask = (task: Task) => {
+  const handleEditTask = useCallback((task: Task) => {
     setEditingTask(task);
     setShowForm(true);
-  };
+  }, []);
 
-  const handleCloseForm = () => {
+  const handleCloseForm = useCallback(() => {
     setShowForm(false);
     setEditingTask(undefined);
-  };
+  }, []);
 
-  const handleClearCompleted = () => {
+  const handleClearCompleted = useCallback(() => {
     clearCompleted();
-  };
+  }, [clearCompleted]);
 
   if (showForm) {
     return (
@@ -166,13 +222,32 @@ function TaskListContent() {
               {activeTasks} active • {completedTasks} completed
             </Text>
           </View>
-          <Button onPress={handleAddTask} size="sm" className="rounded-full">
-            <Icon as={PlusIcon} size={18} className="text-primary-foreground" />
-          </Button>
+          <View className="flex-row gap-2">
+            <Button 
+              onPress={() => setSortBy(sortBy === 'time' ? 'priority' : 'time')} 
+              size="sm" 
+              variant="ghost"
+              className="rounded-full"
+            >
+              <Icon 
+                as={sortBy === 'time' ? ClockIcon : ArrowUpIcon} 
+                size={16} 
+                className="text-muted-foreground" 
+              />
+            </Button>
+            <Button onPress={handleAddTask} size="sm" className="rounded-full">
+              <Icon as={PlusIcon} size={18} className="text-primary-foreground" />
+            </Button>
+          </View>
         </View>
 
         {/* Minimalist Filter Pills */}
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mb-2">
+        <ScrollView 
+          horizontal 
+          showsHorizontalScrollIndicator={false} 
+          className="mb-2"
+          removeClippedSubviews={false}
+        >
           <View className="flex-row gap-2 px-1">
             {(() => {
               const baseFilters = [
@@ -209,7 +284,7 @@ function TaskListContent() {
 
       {/* Clear Completed Button - Minimalist */}
       {completedTasks > 0 && filter === 'completed' && (
-        <View className="px-4 mb-3">
+        <View className="px-4 mb-3" key="clear-completed-button">
           <Button
             onPress={handleClearCompleted}
             variant="ghost"
@@ -223,7 +298,11 @@ function TaskListContent() {
       )}
 
       {/* Minimalist Task List */}
-      <ScrollView className="flex-1 px-4" showsVerticalScrollIndicator={false}>
+      <ScrollView 
+        className="flex-1 px-4" 
+        showsVerticalScrollIndicator={false}
+        removeClippedSubviews={false}
+      >
         {filteredTasks.length === 0 ? (
           <View className="flex-1 items-center justify-center py-20">
             <Icon
@@ -261,7 +340,7 @@ function TaskListContent() {
       </ScrollView>
     </View>
   );
-}
+});
 
 export function TaskList() {
   return (

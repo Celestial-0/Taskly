@@ -6,7 +6,7 @@ import { PortalHost } from '@rn-primitives/portal';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useColorScheme } from 'nativewind';
-import { AppProvider } from '@/lib/app-provider';
+import { AppProvider } from '@/components/provider/app-provider';
 import * as React from 'react';
 
 export {
