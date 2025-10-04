@@ -9,19 +9,22 @@ const findOrCreateCategory = async (categoryName: string): Promise<string | null
   if (!categoryName || categoryName.trim() === '') return null;
   
   try {
+    // Normalize category name to lowercase
+    const normalizedName = categoryName.trim().toLowerCase();
+    
     // First try to find existing category (case-insensitive)
     const categories = await categoryRepository.getAll();
     const existing = categories.find(cat => 
-      cat.name.toLowerCase() === categoryName.toLowerCase()
+      cat.name.toLowerCase() === normalizedName
     );
     
     if (existing) {
       return existing.id;
     }
     
-    // Create new category if it doesn't exist
+    // Create new category if it doesn't exist (with lowercase name)
     const newCategory = await categoryRepository.create({
-      name: categoryName.trim(),
+      name: normalizedName,
       color: getRandomCategoryColor(),
     });
     
@@ -206,8 +209,11 @@ export const useStore = create<Store>((set, get) => ({
       const existingCategories = getAllCategories();
       const taskData = await createTaskFromInput(input, existingCategories);
       
+      // Normalize category to lowercase
+      const normalizedCategory = taskData.category?.trim().toLowerCase();
+      
       // Find or create category in database
-      const categoryId = await findOrCreateCategory(taskData.category || '');
+      const categoryId = await findOrCreateCategory(normalizedCategory || '');
       
       // Create in database
       const dbTask = await taskRepository.create({
@@ -224,7 +230,7 @@ export const useStore = create<Store>((set, get) => ({
         title: dbTask.title,
         description: dbTask.description || undefined,
         completed: dbTask.completed,
-        category: taskData.category,
+        category: normalizedCategory,
         priority: dbTask.priority as Task['priority'],
         createdAt: new Date(dbTask.createdAt),
         updatedAt: new Date(dbTask.updatedAt),
@@ -242,7 +248,7 @@ export const useStore = create<Store>((set, get) => ({
         title: input.title,
         description: input.description,
         completed: false,
-        category: input.category,
+        category: input.category?.trim().toLowerCase(),
         priority: input.priority || 'low',
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -259,8 +265,11 @@ export const useStore = create<Store>((set, get) => ({
     try {
       set({ error: null });
       
+      // Normalize category to lowercase
+      const normalizedCategory = updates.category?.trim().toLowerCase();
+      
       // Find or create category in database
-      const categoryId = await findOrCreateCategory(updates.category || '');
+      const categoryId = await findOrCreateCategory(normalizedCategory || '');
       
       // Update in database
       const dbTask = await taskRepository.update(id, {
@@ -271,13 +280,18 @@ export const useStore = create<Store>((set, get) => ({
       });
       
       if (dbTask) {
-        // Update in state
+        // Update in state with normalized category
+        const normalizedUpdates = {
+          ...updates,
+          category: normalizedCategory,
+        };
+        
         set((state) => ({
           tasks: state.tasks.map((task) =>
             task.id === id
               ? { 
                   ...task, 
-                  ...updates, 
+                  ...normalizedUpdates, 
                   updatedAt: new Date(dbTask.updatedAt) 
                 }
               : task

@@ -9,7 +9,7 @@ const FIRST_LAUNCH_KEY = 'taskly_first_launch_completed';
 const APP_VERSION_KEY = 'taskly_app_version';
 
 // Current app version - increment this when you want to trigger re-initialization
-const CURRENT_APP_VERSION = '1.0.0';
+const CURRENT_APP_VERSION = '1.0.1';
 
 /**
  * Check if this is the first time the app is being launched
