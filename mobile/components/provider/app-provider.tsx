@@ -2,8 +2,8 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { View, Text } from 'react-native';
 import { database } from '@/db';
 import { categoryRepository } from '@/models';
-import { seedDatabase } from './seed-data';
-import { getAppInitializationInfo } from './app-initialization';
+import { seedDatabase } from '@/lib/seed-data';
+import { getAppInitializationInfo } from '@/lib/app-initialization';
 
 // Configure Reanimated to disable strict mode warnings
 import { configureReanimatedLogger, ReanimatedLogLevel } from 'react-native-reanimated';
