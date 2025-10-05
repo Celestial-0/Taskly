@@ -7,6 +7,7 @@ import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useColorScheme } from 'nativewind';
 import { AppProvider } from '@/components/provider/app-provider';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import * as React from 'react';
 
 export {
@@ -24,12 +25,14 @@ export default function RootLayout() {
   );
 
   return (
-    <ThemeProvider value={theme}>
-      <AppProvider>
-        <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
-        <Stack />
-        <PortalHost />
-      </AppProvider>
-    </ThemeProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <ThemeProvider value={theme}>
+        <AppProvider>
+          <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
+          <Stack />
+          <PortalHost />
+        </AppProvider>
+      </ThemeProvider>
+    </GestureHandlerRootView>
   );
 }

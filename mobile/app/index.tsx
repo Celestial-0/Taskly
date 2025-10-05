@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View } from 'react-native';
+import { View, Vibration, Platform } from 'react-native';
 import { Stack, Link } from 'expo-router';
 import { useColorScheme } from 'nativewind';
 import { MoonStarIcon, SunIcon, SettingsIcon, SparklesIcon } from 'lucide-react-native';
@@ -25,14 +25,34 @@ function ThemeToggle() {
   const { colorScheme, toggleColorScheme } = useColorScheme();
   const [isToggling, setIsToggling] = React.useState(false);
 
+  // Haptic feedback function
+  const triggerHapticFeedback = React.useCallback(() => {
+    try {
+      if (Platform.OS === 'ios') {
+        // Light haptic feedback for theme toggle
+        Vibration.vibrate(25);
+      } else if (Platform.OS === 'android') {
+        // Light haptic feedback for Android
+        Vibration.vibrate(30);
+      }
+    } catch (error) {
+      // Graceful degradation - haptic feedback is optional
+      console.log('Haptic feedback not available:', error);
+    }
+  }, []);
+
   const handleToggle = React.useCallback(() => {
     if (isToggling) return;
     setIsToggling(true);
+
+    // Trigger haptic feedback
+    triggerHapticFeedback();
+
     requestAnimationFrame(() => {
       toggleColorScheme();
       setTimeout(() => setIsToggling(false), 100);
     });
-  }, [toggleColorScheme, isToggling]);
+  }, [toggleColorScheme, isToggling, triggerHapticFeedback]);
 
   return (
     <Button
@@ -88,7 +108,7 @@ const SCREEN_OPTIONS = {
     headerTitle: () => <HeaderTitle />,
     headerRight: () => <HeaderActions />,
     headerShadowVisible: true,
-    headerStyle: { backgroundColor: THEME.light.background  },
+    headerStyle: { backgroundColor: THEME.light.background },
   },
   dark: {
     title: '',

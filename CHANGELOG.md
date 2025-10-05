@@ -5,6 +5,37 @@ This project follows **[Semantic Versioning](https://semver.org/)**.
 
 ---
 
+## [1.0.2] - 2025-10-05
+### ✨ Features
+- **feat**: Add swipe-to-delete gesture support for task items with smooth animations
+- **feat**: Implement haptic feedback for improved user interaction (theme toggle, task form, swipe gestures)
+- **feat**: Add GestureHandlerRootView wrapper for proper gesture support
+
+### 🎨 UI/UX Improvements
+- **ui**: Redesign task form with modern card-less layout and improved spacing
+- **ui**: Enhance AI suggestion display with better visual hierarchy
+- **ui**: Add smooth animations to task form (fade-in, slide-in effects)
+- **ui**: Improve task item visual feedback during swipe gestures (red background, trash icon scaling)
+- **ui**: Enhance task form submit button with loading state
+
+### 🐛 Bug Fixes
+- **fix**: Improve Select component value handling to prevent crashes
+- **fix**: Add proper error handling for swipe-to-delete operations
+- **fix**: Implement fallback support for devices without gesture support
+- **fix**: Add safety checks for invalid task data in TaskItem component
+
+### ♻️ Code Quality
+- **refactor**: Optimize TaskItem with React hooks (useCallback, useMemo, useRef)
+- **refactor**: Improve task form state management and async operations
+- **refactor**: Add comprehensive inline documentation for gesture requirements
+- **refactor**: Implement proper animation cleanup for memory management
+
+### 📦 Dependencies
+- **deps**: Add `react-native-gesture-handler` ^2.28.0 for swipe gestures
+- **deps**: Add `@egjs/hammerjs` and `hoist-non-react-statics` (peer dependencies)
+
+---
+
 ## [1.0.1] - 2025-10-05
 ### ⚡ Performance
 - **perf**: Optimize TaskList component with React.memo, useMemo, and useCallback
