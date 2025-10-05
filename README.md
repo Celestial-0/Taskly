@@ -7,18 +7,32 @@ It helps you **capture, organize, and manage tasks** with AI-powered categorizat
 
 Designed to be **local-first**, **extensible**, and **community-driven**, Taskly is the productivity companion for **students, developers, and teams** who value simplicity, speed, and data portability.
 
-**Current Version:** `1.0.0` (MVP Release)
+**Current Version:** `1.0.2` (Latest Release)
+
+---
+
+## 🆕 What's New in v1.0.2
+
+* 👆 **Swipe-to-Delete** – Swipe left on tasks to delete with smooth animations
+* 📳 **Haptic Feedback** – Feel your interactions with tactile feedback across the app
+* 🎨 **Redesigned Task Form** – Cleaner, more modern UI with better animations
+* ✨ **Enhanced Gestures** – Better touch interactions with `react-native-gesture-handler`
+* 🐛 **Bug Fixes** – Improved stability and error handling
+
+See the [CHANGELOG.md](CHANGELOG.md) for full details.
 
 ---
 
 ## ✨ Features
 
-### 🎯 MVP Features (v1.0.0)
-* 📝 **Core Task Management** – Create, update, complete, and delete tasks
+### 🎯 Core Features
+* 📝 **Task Management** – Create, update, complete, and delete tasks
+* 🎯 **Swipe Gestures** – Swipe-to-delete with haptic feedback (v1.0.2)
 * 💾 **Offline-First Storage** – Expo SQLite + Drizzle ORM with AsyncStorage fallback
 * 🤖 **AI-Powered Categorization** – Auto-categorize tasks (Work, Study, Personal, etc.)
 * 📤📥 **Import/Export** – Backup and restore tasks in JSON/CSV format
-* 🌙 **Modern UI/UX** – Clean interface with dark mode support
+* 🌙 **Modern UI/UX** – Clean interface with dark mode and smooth animations
+* 📳 **Haptic Feedback** – Tactile feedback for improved user experience (v1.0.2)
 * 📱 **Cross-Platform** – iOS, Android, and Web support via Expo
 
 ### 🚀 Coming Soon
