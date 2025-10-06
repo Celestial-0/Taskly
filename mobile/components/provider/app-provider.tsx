@@ -4,6 +4,7 @@ import { database } from '@/db';
 import { categoryRepository } from '@/models';
 import { seedDatabase } from '@/lib/seed-data';
 import { getAppInitializationInfo } from '@/lib/app-initialization';
+import { useSettingsStore } from '@/lib/settings-store';
 
 // Configure Reanimated to disable strict mode warnings
 import { configureReanimatedLogger, ReanimatedLogLevel } from 'react-native-reanimated';
@@ -32,6 +33,7 @@ interface AppProviderProps {
 export function AppProvider({ children }: AppProviderProps) {
   const [isInitialized, setIsInitialized] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { loadSettings } = useSettingsStore();
 
   useEffect(() => {
     initializeApp();
@@ -63,6 +65,10 @@ export function AppProvider({ children }: AppProviderProps) {
 
       // Seed database with demo data (only on first launch)
       await seedDatabase();
+
+      // Load user settings
+      await loadSettings();
+      console.log('⚙️ Settings loaded');
 
       setIsInitialized(true);
       console.log('🎉 App initialization complete');

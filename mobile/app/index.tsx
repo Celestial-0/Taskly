@@ -8,7 +8,8 @@ import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
 import { Badge } from '@/components/ui/badge';
 import { Text } from '@/components/ui/text';
-import { Main } from '@/components/core/main';
+import { Main } from '@/components/tasks/main';
+import TasklyLogo from '@/components/icons/taskly';
 
 // --------------------
 // CONSTANTS
@@ -89,12 +90,13 @@ function HeaderActions() {
 // HEADER TITLE
 // --------------------
 function HeaderTitle() {
+  const { colorScheme } = useColorScheme();
   return (
     <View className="flex-row items-center gap-2 pl-2">
-      <Icon as={SparklesIcon} className="size-6 text-primary" />
-      <Badge variant="default">
+      <TasklyLogo size={32} color={`${colorScheme === 'light' ?  "#000" : "#fff" }`} />
+      {/* <Badge variant="default">
         <Text className="text-xs font-bold">Taskly</Text>
-      </Badge>
+      </Badge> */}
     </View>
   );
 }

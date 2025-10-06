@@ -107,6 +107,7 @@ class Database {
           duration INTEGER,
           notes TEXT,
           created_at TEXT DEFAULT CURRENT_TIMESTAMP NOT NULL,
+          updated_at TEXT DEFAULT CURRENT_TIMESTAMP NOT NULL,
           sync_status TEXT DEFAULT 'pending' NOT NULL,
           last_sync_at TEXT
         );
