@@ -1,7 +1,7 @@
 {
   "name": "taskly",
   "main": "expo-router/entry",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "scripts": {
     "dev": "expo start -c",
     "android": "expo start -c --android",
@@ -56,8 +56,9 @@
     "react-native-reanimated": "~3.17.5",
     "react-native-safe-area-context": "5.4.0",
     "react-native-screens": "~4.11.1",
-    "react-native-svg": "15.11.2",
+    "react-native-svg": "^15.11.2",
     "react-native-web": "~0.20.0",
+    "simple-icons": "^15.16.1",
     "tailwind-merge": "^2.2.1",
     "tailwindcss": "^3.4.14",
     "tailwindcss-animate": "^1.0.7",

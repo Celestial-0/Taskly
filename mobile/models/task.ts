@@ -56,7 +56,7 @@ export class TaskRepository extends BaseRepository<Task, NewTask> {
       }
 
       if (conditions.length > 0) {
-        query = query.where(and(...conditions));
+        query = query.where(and(...conditions)) as any;
       }
 
       return await query.orderBy(desc(tasks.createdAt));

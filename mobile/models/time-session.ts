@@ -1,10 +1,10 @@
-import { eq, and, desc, asc, isNull, isNotNull, sql } from 'drizzle-orm';
+import { eq, and, desc, isNull, isNotNull, sql } from 'drizzle-orm';
 import { db } from '../db/database';
 import { timeSessions, tasks, type TimeSession, type NewTimeSession } from '../db/schema';
 import { BaseRepository } from './base';
 
 export interface TimeSessionWithTask extends TimeSession {
-  taskTitle?: string;
+  taskTitle?: string | null;
 }
 
 export interface TimeStats {
@@ -98,6 +98,7 @@ export class TimeSessionRepository extends BaseRepository<TimeSession, NewTimeSe
           duration: timeSessions.duration,
           notes: timeSessions.notes,
           createdAt: timeSessions.createdAt,
+          updatedAt: timeSessions.updatedAt,
           syncStatus: timeSessions.syncStatus,
           lastSyncAt: timeSessions.lastSyncAt,
           taskTitle: tasks.title,
@@ -140,6 +141,7 @@ export class TimeSessionRepository extends BaseRepository<TimeSession, NewTimeSe
           duration: timeSessions.duration,
           notes: timeSessions.notes,
           createdAt: timeSessions.createdAt,
+          updatedAt: timeSessions.updatedAt,
           syncStatus: timeSessions.syncStatus,
           lastSyncAt: timeSessions.lastSyncAt,
           taskTitle: tasks.title,
@@ -168,6 +170,7 @@ export class TimeSessionRepository extends BaseRepository<TimeSession, NewTimeSe
           duration: timeSessions.duration,
           notes: timeSessions.notes,
           createdAt: timeSessions.createdAt,
+          updatedAt: timeSessions.updatedAt,
           syncStatus: timeSessions.syncStatus,
           lastSyncAt: timeSessions.lastSyncAt,
           taskTitle: tasks.title,

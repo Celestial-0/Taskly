@@ -1,4 +1,4 @@
-import { eq, and, desc, asc } from 'drizzle-orm';
+import { eq, desc, asc } from 'drizzle-orm';
 import { db } from '../db/database';
 import database from '../db/database';
 import { syncMetadata } from '../db/schema';
@@ -15,7 +15,7 @@ export interface BaseModel {
   lastSyncAt?: string | null;
 }
 
-export abstract class BaseRepository<T extends BaseModel, TInsert> {
+export abstract class BaseRepository<T extends BaseModel, TInsert extends Record<string, any>> {
   protected abstract tableName: string;
   protected abstract table: any;
 
@@ -114,7 +114,7 @@ export abstract class BaseRepository<T extends BaseModel, TInsert> {
       createdAt: timestamp,
       updatedAt: timestamp,
       syncStatus: 'pending' as SyncStatus,
-    } as TInsert;
+    } as unknown as TInsert;
 
     try {
       // Ensure database is initialized
@@ -222,7 +222,7 @@ export abstract class BaseRepository<T extends BaseModel, TInsert> {
       updatedAt: timestamp,
       syncStatus: 'synced' as SyncStatus,
       lastSyncAt: timestamp,
-    })) as TInsert[];
+    })) as unknown as TInsert[];
 
     try {
       await db.insert(this.table).values(newRecords);

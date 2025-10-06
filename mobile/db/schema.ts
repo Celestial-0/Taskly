@@ -53,6 +53,7 @@ export const timeSessions = sqliteTable('time_sessions', {
   duration: integer('duration'), // seconds, calculated when session ends
   notes: text('notes'),
   createdAt: text('created_at').default(sql`CURRENT_TIMESTAMP`).notNull(),
+  updatedAt: text('updated_at').default(sql`CURRENT_TIMESTAMP`).notNull(),
   syncStatus: text('sync_status', { enum: ['synced', 'pending', 'conflict'] }).default('pending').notNull(),
   lastSyncAt: text('last_sync_at'),
 });
