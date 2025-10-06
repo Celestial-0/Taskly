@@ -5,6 +5,70 @@ This project follows **[Semantic Versioning](https://semver.org/)**.
 
 ---
 
+## [1.1.1] - 2025-10-06
+### 📚 Documentation
+- **docs**: Add comprehensive CONTRIBUTING.md with contribution guidelines, code of conduct, and development workflow
+- **docs**: Create detailed LICENSE.md with MIT License terms and conditions
+- **docs**: Enhance README.md with improved project structure, features documentation, and developer setup instructions
+- **docs**: Add issue and pull request templates for better community engagement
+- **docs**: Update documentation structure for better clarity and accessibility
+
+---
+
+## [1.1.0] - 2025-10-06
+### 🎨 Major UI Overhaul
+- **feat**: Complete redesign of Settings screen with modular, section-based architecture
+- **feat**: Implement theme toggle with platform-specific haptic feedback (iOS 25ms, Android 30ms)
+- **feat**: Create dedicated icon components library (GitHub, Taskly logos)
+- **feat**: Add SafeAreaView integration for improved cross-platform compatibility
+- **feat**: Enhance visual hierarchy with modernized UI components
+
+### 🏗️ Architecture & Code Quality
+- **refactor**: Major component reorganization into feature-based folders (`tasks/`, `settings/`, `icons/`, `provider/`)
+- **refactor**: Extract modular Settings sections (About, AI, Notifications, Export/Import)
+- **refactor**: Remove ~1,897 lines of legacy code for better maintainability
+- **refactor**: Implement enhanced separation of concerns across components
+- **refactor**: Improve component reusability with better abstraction
+
+### ⚙️ Settings System
+- **feat**: Implement Zustand-based settings state management (`settings-store.ts`)
+- **feat**: Create About section with app info, tech stack, developer details, and project links
+- **feat**: Add AI settings configuration section
+- **feat**: Build Notifications settings management
+- **feat**: Design Export/Import data management interface
+
+### � Component Architecture
+- **refactor**: Split monolithic components into focused, single-responsibility modules
+- **refactor**: Create `components/settings/` folder for all settings-related UI
+- **refactor**: Organize task components under `components/tasks/`
+- **refactor**: Move provider components to `components/provider/`
+- **refactor**: Add icon library in `components/icons/`
+
+### 💅 UI/UX Improvements
+- **ui**: Redesign Settings cards with better spacing and visual hierarchy
+- **ui**: Add animated theme toggle with smooth transitions
+- **ui**: Enhance Settings navigation with section-based layout
+- **ui**: Improve Settings card components with consistent styling
+- **ui**: Add developer and project information cards
+
+### 🐛 Bug Fixes & Polish
+- **fix**: Resolve haptic feedback timing issues across platforms
+- **fix**: Improve Settings screen scroll performance
+- **fix**: Fix component import paths after reorganization
+- **fix**: Enhance error boundary handling
+
+### 🔧 Developer Experience
+- **dx**: Better folder structure for improved code navigation
+- **dx**: Clearer component naming conventions
+- **dx**: Enhanced code maintainability with smaller, focused files
+- **dx**: Improved import organization with feature-based modules
+
+---
+
+💡 **Breaking Changes:** Complete component reorganization may require import path updates in custom modifications.
+
+---
+
 ## [1.0.2] - 2025-10-05
 ### ✨ Features
 - **feat**: Add swipe-to-delete gesture support for task items with smooth animations
