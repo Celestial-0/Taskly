@@ -5,6 +5,38 @@ This project follows **[Semantic Versioning](https://semver.org/)**.
 
 ---
 
+## [1.1.2] - 2025-10-07
+### ✨ Features
+- **feat**: New detailed task view screen with comprehensive information display
+- **feat**: Markdown preview and edit toggle for task descriptions
+- **feat**: Enhanced subtask management with improved UX and dialogs
+- **feat**: Time tracking UI with session history and total time display
+- **feat**: Task detail navigation on tap from task list
+
+### 🎨 UI/UX Improvements
+- **ui**: Redesigned task detail screen with progress bars, meta information, and action buttons
+- **ui**: Added markdown support in task descriptions (headers, bold, italic, lists, code)
+- **ui**: Improved subtask manager with better visual feedback and animations
+- **ui**: Enhanced time tracker with active session display and formatted time
+- **ui**: Added category badge component with customizable colors and sizes
+
+### 🐛 Bug Fixes
+- **fix**: Corrected progress bar color from foreground to primary
+- **fix**: Fixed completion percentage logic for tasks with and without subtasks
+- **fix**: Improved progress bar animation with proper spring configuration
+- **fix**: Enhanced task item tap navigation to detail screen
+
+### 📦 Dependencies
+- **deps**: Add `date-fns` ^4.1.0 for date formatting and manipulation
+
+### ♻️ Code Quality
+- **refactor**: Create reusable CategoryBadge component for consistent category display
+- **refactor**: Implement SubtaskManager component with comprehensive error handling
+- **refactor**: Build TimeTracker component with proper state management
+- **refactor**: Add task detail screen with modular card-based layout
+
+---
+
 ## [1.1.1] - 2025-10-06
 ### 📚 Documentation
 - **docs**: Add comprehensive CONTRIBUTING.md with contribution guidelines, code of conduct, and development workflow

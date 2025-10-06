@@ -17,7 +17,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Icon } from '@/components/ui/icon';
-import { SparklesIcon, SaveIcon, WandIcon, XIcon, CheckIcon } from 'lucide-react-native';
+import { SparklesIcon, SaveIcon, WandIcon, XIcon, CheckIcon, EyeIcon, EditIcon } from 'lucide-react-native';
 
 import { Task, TaskInput } from '@/lib/types';
 import { useStore } from '@/lib/store';
@@ -44,10 +44,86 @@ export function TaskForm({ task, onClose }: TaskFormProps) {
   } | null>(null);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showMarkdownPreview, setShowMarkdownPreview] = useState(false);
 
   // Animation values
   const submitScale = useSharedValue(1);
   const aiSuggestionOpacity = useSharedValue(0);
+
+  // Simple markdown renderer for preview
+  const renderMarkdown = (text: string) => {
+    if (!text) return null;
+
+    // Split text into lines and process each line
+    const lines = text.split('\n');
+    const elements: React.ReactNode[] = [];
+
+    lines.forEach((line, index) => {
+      let processedLine = line;
+      let isHeader = false;
+      let isBold = false;
+      let isItalic = false;
+      let isCode = false;
+      let isList = false;
+
+      // Headers
+      if (line.startsWith('### ')) {
+        processedLine = line.substring(4);
+        isHeader = true;
+      } else if (line.startsWith('## ')) {
+        processedLine = line.substring(3);
+        isHeader = true;
+      } else if (line.startsWith('# ')) {
+        processedLine = line.substring(2);
+        isHeader = true;
+      }
+      // Lists
+      else if (line.startsWith('- ') || line.startsWith('* ')) {
+        processedLine = '• ' + line.substring(2);
+        isList = true;
+      }
+      // Code blocks (simple single line)
+      else if (line.startsWith('```') && line.endsWith('```')) {
+        processedLine = line.substring(3, line.length - 3);
+        isCode = true;
+      }
+      // Inline code
+      else if (line.includes('`')) {
+        isCode = line.startsWith('`') && line.endsWith('`');
+        if (isCode) {
+          processedLine = line.substring(1, line.length - 1);
+        }
+      }
+
+      // Bold and italic (simple detection)
+      if (processedLine.includes('**')) {
+        isBold = true;
+        processedLine = processedLine.replace(/\*\*(.*?)\*\*/g, '$1');
+      }
+      if (processedLine.includes('*') && !isBold) {
+        isItalic = true;
+        processedLine = processedLine.replace(/\*(.*?)\*/g, '$1');
+      }
+
+      elements.push(
+        <Text
+          key={index}
+          className={`
+            ${isHeader ? 'text-base font-bold text-foreground' : 'text-sm text-muted-foreground'}
+            ${isBold ? 'font-bold' : ''}
+            ${isItalic ? 'italic' : ''}
+            ${isCode ? 'font-mono bg-muted/50 px-1 rounded' : ''}
+            ${isList ? 'ml-2' : ''}
+          `}
+          style={{ marginBottom: 4 }}
+        >
+          {processedLine || ' '}
+        </Text>
+      );
+    });
+
+    return elements;
+  };
 
   // Haptic feedback function
   const triggerHapticFeedback = (type: 'light' | 'medium' = 'light') => {
@@ -172,7 +248,12 @@ export function TaskForm({ task, onClose }: TaskFormProps) {
         </Button>
       </Animated.View>
 
-      <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
+      <ScrollView
+        className="flex-1"
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 100 }}
+        keyboardShouldPersistTaps="handled"
+      >
         <View className="px-6 py-6 gap-6">
           {/* Title Input */}
           <Animated.View entering={FadeInDown.delay(200)} className="gap-3">
@@ -196,15 +277,57 @@ export function TaskForm({ task, onClose }: TaskFormProps) {
 
           {/* Description Input */}
           <Animated.View entering={FadeInDown.delay(300)} className="gap-3">
-            <Text className="text-sm font-medium text-foreground">Description</Text>
-            <Textarea
-              value={formData.description}
-              onChangeText={(description) => setFormData({ ...formData, description })}
-              placeholder="Add more details (optional)..."
-              placeholderTextColor="#9CA3AF"
-              numberOfLines={3}
-              className="text-sm border-0 bg-muted/30 rounded-lg min-h-[80px]"
-            />
+            <View className="flex-row items-center justify-between">
+              <Text className="text-sm font-medium text-foreground">Description</Text>
+              <View className="flex-row gap-2">
+                <Button
+                  onPress={() => setShowMarkdownPreview(false)}
+                  variant="ghost"
+                  size="sm"
+                  className={`px-2 py-1 ${!showMarkdownPreview ? 'bg-primary/10' : ''}`}
+                >
+                  <Icon as={EditIcon} size={14} className={!showMarkdownPreview ? 'text-primary' : 'text-muted-foreground'} />
+                </Button>
+                <Button
+                  onPress={() => setShowMarkdownPreview(true)}
+                  variant="ghost"
+                  size="sm"
+                  className={`px-2 py-1 ${showMarkdownPreview ? 'bg-primary/10' : ''}`}
+                >
+                  <Icon as={EyeIcon} size={14} className={showMarkdownPreview ? 'text-primary' : 'text-muted-foreground'} />
+                </Button>
+              </View>
+            </View>
+
+            {!showMarkdownPreview ? (
+              <View className="gap-2">
+                <Textarea
+                  value={formData.description}
+                  onChangeText={(description) => setFormData({ ...formData, description })}
+                  placeholder="Add more details (optional)...&#10;&#10;Supports Markdown:&#10;# Header&#10;**bold** *italic*&#10;- List item&#10;`code`"
+                  placeholderTextColor="#9CA3AF"
+                  numberOfLines={6}
+                  className="text-sm border-0 bg-muted/30 rounded-lg min-h-[120px]"
+                  multiline
+                  textAlignVertical="top"
+                />
+                <Text className="text-xs text-muted-foreground">
+                  Supports Markdown: **bold**, *italic*, # headers, - lists, `code`
+                </Text>
+              </View>
+            ) : (
+              <View className="min-h-[120px] bg-muted/30 rounded-lg p-3 border-0">
+                {formData.description ? (
+                  <View className="gap-1">
+                    {renderMarkdown(formData.description)}
+                  </View>
+                ) : (
+                  <Text className="text-muted-foreground text-sm italic">
+                    No description provided
+                  </Text>
+                )}
+              </View>
+            )}
           </Animated.View>
 
           {/* Category and Priority */}
@@ -294,20 +417,19 @@ export function TaskForm({ task, onClose }: TaskFormProps) {
         </View>
       </ScrollView>
 
-      {/* Bottom Actions */}
+      {/* Bottom Actions - Fixed at bottom */}
       <Animated.View
         entering={FadeInDown.delay(600)}
-        className="px-8 py-6 pb-8 bg-background border-t border-border/10"
+        className="absolute bottom-0 left-0 right-0 px-8 py-6 pb-10 bg-background border-t border-border/10"
       >
         <View className="flex-row gap-3">
           <Button
             onPress={handleCancel}
             variant="ghost"
-            className="flex-1 py-3 rounded-lg  bg-muted/30"
+            className="flex-1 py-3 rounded-lg bg-muted/30"
           >
             <Text className="text-muted-foreground">Cancel</Text>
           </Button>
-          {/* <Animated.View style={submitButtonStyle} className="flex-1"> */}
           <Button
             onPress={handleSubmit}
             disabled={!formData.title.trim() || isSubmitting}
@@ -330,10 +452,8 @@ export function TaskForm({ task, onClose }: TaskFormProps) {
               </View>
             )}
           </Button>
-          {/* </Animated.View> */}
         </View>
       </Animated.View>
     </View>
-
   );
 }

@@ -3,13 +3,15 @@
   <span style="font-weight: bold; font-size: 20px;">Taskly Documentation</span>
 </div>
 
-## 🆕 What's New in v1.1.1
+## 🆕 What's New in v1.1.2
 
-* 📚 **Documentation Improvements** – Comprehensive CONTRIBUTING.md with contribution guidelines
-* 📄 **LICENSE.md** – Detailed MIT License terms and conditions
-* 📖 **Enhanced README** – Improved project structure and developer setup instructions
-* 🎫 **Community Templates** – Issue and pull request templates for better engagement
-* � **Documentation Structure** – Better clarity and accessibility across all docs
+* � **Task Detail Screen** – Comprehensive task view with progress, subtasks, time tracking, and meta info
+* ✍️ **Markdown Preview** – Rich text formatting in task descriptions with live preview toggle
+* ✅ **Enhanced Subtasks** – Improved subtask management with better UX and error handling
+* ⏱️ **Time Tracking** – Built-in time tracker with session history and total time display
+* � **UI Improvements** – Better progress bars, category badges, and visual feedback
+* 🐛 **Bug Fixes** – Corrected completion percentage logic and progress bar styling
+* 📦 **Dependencies** – Added date-fns for better date formatting and manipulation
 
 See the [CHANGELOG.md](CHANGELOG.md) for full details.
 
@@ -22,7 +24,7 @@ It helps you **capture, organize, and manage tasks** with AI-powered categorizat
 
 Designed to be **local-first**, **extensible**, and **community-driven**, Taskly is the productivity companion for **students, developers, and teams** who value simplicity, speed, and data portability.
 
-**Current Version:** `1.1.1` (Latest Release)
+**Current Version:** `1.1.2` (Latest Release)
 
 ---
 
@@ -30,6 +32,9 @@ Designed to be **local-first**, **extensible**, and **community-driven**, Taskly
 
 ### 🎯 Core Features
 * 📝 **Task Management** – Create, update, complete, and delete tasks
+* 📋 **Task Details** – Comprehensive view with progress, subtasks, time tracking, and metadata (v1.1.2)
+* ✍️ **Markdown Support** – Rich text formatting in task descriptions with live preview (v1.1.2)
+* ⏱️ **Time Tracking** – Built-in timer with session history and total time tracking (v1.1.2)
 * 🎯 **Swipe Gestures** – Swipe-to-delete with haptic feedback (v1.0.2)
 * 💾 **Offline-First Storage** – Expo SQLite + Drizzle ORM with AsyncStorage fallback
 * 🤖 **AI-Powered Categorization** – Auto-categorize tasks (Work, Study, Personal, etc.)
