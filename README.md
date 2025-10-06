@@ -1,4 +1,19 @@
-# 📖 Taskly Documentation
+<div style="display: flex; align-items: center; justify-content: center;">
+  <img src="https://github.com/Celestial-0/Taskly/blob/main/mobile/assets/images/favicon.png?raw=true" alt="Taskly Logo" width="30" height="30" style="margin-right: 8px;">
+  <span style="font-weight: bold; font-size: 20px;">Taskly Documentation</span>
+</div>
+
+## 🆕 What's New in v1.1.1
+
+* 📚 **Documentation Improvements** – Comprehensive CONTRIBUTING.md with contribution guidelines
+* 📄 **LICENSE.md** – Detailed MIT License terms and conditions
+* 📖 **Enhanced README** – Improved project structure and developer setup instructions
+* 🎫 **Community Templates** – Issue and pull request templates for better engagement
+* � **Documentation Structure** – Better clarity and accessibility across all docs
+
+See the [CHANGELOG.md](CHANGELOG.md) for full details.
+
+---
 
 ## 📌 Overview
 
@@ -7,19 +22,7 @@ It helps you **capture, organize, and manage tasks** with AI-powered categorizat
 
 Designed to be **local-first**, **extensible**, and **community-driven**, Taskly is the productivity companion for **students, developers, and teams** who value simplicity, speed, and data portability.
 
-**Current Version:** `1.0.2` (Latest Release)
-
----
-
-## 🆕 What's New in v1.0.2
-
-* 👆 **Swipe-to-Delete** – Swipe left on tasks to delete with smooth animations
-* 📳 **Haptic Feedback** – Feel your interactions with tactile feedback across the app
-* 🎨 **Redesigned Task Form** – Cleaner, more modern UI with better animations
-* ✨ **Enhanced Gestures** – Better touch interactions with `react-native-gesture-handler`
-* 🐛 **Bug Fixes** – Improved stability and error handling
-
-See the [CHANGELOG.md](CHANGELOG.md) for full details.
+**Current Version:** `1.1.1` (Latest Release)
 
 ---
 
@@ -33,6 +36,8 @@ See the [CHANGELOG.md](CHANGELOG.md) for full details.
 * 📤📥 **Import/Export** – Backup and restore tasks in JSON/CSV format
 * 🌙 **Modern UI/UX** – Clean interface with dark mode and smooth animations
 * 📳 **Haptic Feedback** – Tactile feedback for improved user experience (v1.0.2)
+* ⚙️ **Modular Settings** – Organized Settings screen with About, AI, Notifications, and Export/Import sections (v1.1.0)
+* 🎨 **Component Architecture** – Feature-based organization for better maintainability (v1.1.0)
 * 📱 **Cross-Platform** – iOS, Android, and Web support via Expo
 
 ### 🚀 Coming Soon

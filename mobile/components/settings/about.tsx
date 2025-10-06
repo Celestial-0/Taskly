@@ -68,7 +68,7 @@ export function About() {
                             <CardDescription>AI-Powered Task Management</CardDescription>
                         </View>
                         <Badge variant="secondary">
-                            <Text className="text-xs font-bold">v1.0.2</Text>
+                            <Text className="text-xs font-bold">v1.1.1</Text>
                         </Badge>
                     </View>
                 </CardHeader>
@@ -84,13 +84,13 @@ export function About() {
                     <View className="gap-3">
                         <View className="flex-row items-center gap-2">
                             <Icon as={RocketIcon} size={16} className="text-primary" />
-                            <Text className="text-sm font-medium">Latest Features</Text>
+                            <Text className="text-sm font-medium">Latest Features (v1.1.1)</Text>
                         </View>
                         <View className="gap-2 ml-6">
-                            <Text className="text-sm text-muted-foreground">• Swipe-to-delete with haptic feedback</Text>
-                            <Text className="text-sm text-muted-foreground">• Enhanced gesture support</Text>
-                            <Text className="text-sm text-muted-foreground">• Redesigned task form with animations</Text>
-                            <Text className="text-sm text-muted-foreground">• Improved stability and error handling</Text>
+                            <Text className="text-sm text-muted-foreground">• Comprehensive documentation improvements</Text>
+                            <Text className="text-sm text-muted-foreground">• Added CONTRIBUTING.md with guidelines</Text>
+                            <Text className="text-sm text-muted-foreground">• Enhanced README with better structure</Text>
+                            <Text className="text-sm text-muted-foreground">• Community templates for issues and PRs</Text>
                         </View>
                     </View>
                 </CardContent>
@@ -207,7 +207,7 @@ export function About() {
                             className="justify-start"
                             onPress={() => openLink('https://github.com/Celestial-0/taskly')}
                         >
-                            <GithubIcon size={16} className="text-foreground" color="#fff" />
+                            <GithubIcon size={16} className="text-foreground" color={`${colorScheme === 'light' ?  "#000" : "#fff" }`} />
                             <Text>View on GitHub</Text>
                             <Icon as={ExternalLinkIcon} size={14} className="text-muted-foreground ml-auto" />
                         </Button>
