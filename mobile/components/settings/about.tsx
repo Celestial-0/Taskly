@@ -68,7 +68,7 @@ export function About() {
                             <CardDescription>AI-Powered Task Management</CardDescription>
                         </View>
                         <Badge variant="secondary">
-                            <Text className="text-xs font-bold">v1.1.1</Text>
+                            <Text className="text-xs font-bold">v1.1.2</Text>
                         </Badge>
                     </View>
                 </CardHeader>
@@ -84,13 +84,13 @@ export function About() {
                     <View className="gap-3">
                         <View className="flex-row items-center gap-2">
                             <Icon as={RocketIcon} size={16} className="text-primary" />
-                            <Text className="text-sm font-medium">Latest Features (v1.1.1)</Text>
+                            <Text className="text-sm font-medium">Latest Features (v1.1.2)</Text>
                         </View>
                         <View className="gap-2 ml-6">
-                            <Text className="text-sm text-muted-foreground">• Comprehensive documentation improvements</Text>
-                            <Text className="text-sm text-muted-foreground">• Added CONTRIBUTING.md with guidelines</Text>
-                            <Text className="text-sm text-muted-foreground">• Enhanced README with better structure</Text>
-                            <Text className="text-sm text-muted-foreground">• Community templates for issues and PRs</Text>
+                            <Text className="text-sm text-muted-foreground">• New detailed task view screen</Text>
+                            <Text className="text-sm text-muted-foreground">• Markdown preview for descriptions</Text>
+                            <Text className="text-sm text-muted-foreground">• Enhanced time tracking UI</Text>
+                            <Text className="text-sm text-muted-foreground">• Improved subtask management</Text>
                         </View>
                     </View>
                 </CardContent>

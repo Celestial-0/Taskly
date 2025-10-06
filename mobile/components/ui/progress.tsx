@@ -55,16 +55,23 @@ function WebIndicator({ value, className }: IndicatorProps) {
 }
 
 function NativeIndicator({ value, className }: IndicatorProps) {
-  const progress = useDerivedValue(() => value ?? 0);
+  const progress = useDerivedValue(() => {
+    const clampedValue = Math.max(0, Math.min(100, value ?? 0));
+    return clampedValue;
+  }, [value]);
 
   const indicator = useAnimatedStyle(() => {
     return {
       width: withSpring(
-        `${interpolate(progress.value, [0, 100], [1, 100], Extrapolation.CLAMP)}%`,
-        { overshootClamping: true }
+        `${progress.value}%`,
+        { 
+          damping: 15,
+          stiffness: 150,
+          overshootClamping: true 
+        }
       ),
     };
-  }, [value]);
+  }, [progress.value]);
 
   if (Platform.OS === 'web') {
     return null;
@@ -72,7 +79,7 @@ function NativeIndicator({ value, className }: IndicatorProps) {
 
   return (
     <ProgressPrimitive.Indicator asChild>
-      <Animated.View style={indicator} className={cn('bg-foreground h-full', className)} />
+      <Animated.View style={indicator} className={cn('bg-primary h-full', className)} />
     </ProgressPrimitive.Indicator>
   );
 }

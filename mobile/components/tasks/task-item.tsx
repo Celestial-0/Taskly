@@ -9,6 +9,7 @@ import Animated, {
   cancelAnimation
 } from 'react-native-reanimated';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import { useRouter } from 'expo-router';
 import { Text } from '@/components/ui/text';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
@@ -46,6 +47,7 @@ export function TaskItem({ task, onEdit, onDelete, swipeThresholds }: TaskItemPr
   }
 
   const { toggleTask, deleteTask } = useStore();
+  const router = useRouter();
 
   // Integration with task store: Both swipe delete and button delete use the same 
   // store method (deleteTask) to ensure consistency in behavior and error handling
@@ -546,9 +548,9 @@ export function TaskItem({ task, onEdit, onDelete, swipeThresholds }: TaskItemPr
       // Prevent other tap actions when resetting
       return;
     }
-    // If not swiped, allow normal tap behavior (could be used for other interactions)
-    // This preserves existing functionality while adding swipe-to-reset capability
-  }, [handleTapToReset]);
+    // Navigate to task detail screen
+    router.push(`/task/${task.id}`);
+  }, [handleTapToReset, router, task.id]);
 
   return (
     <View

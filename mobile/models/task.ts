@@ -91,11 +91,18 @@ export class TaskRepository extends BaseRepository<Task, NewTask> {
         return total + (session.duration ? Math.round(session.duration / 60) : 0);
       }, 0);
 
-      // Calculate completion percentage based on subtasks
-      let completionPercentage = task.completed ? 100 : 0;
-      if (taskSubtasks.length > 0 && !task.completed) {
+      // Calculate completion percentage
+      let completionPercentage = 0;
+      if (task.completed) {
+        // If task is marked as completed, always show 100%
+        completionPercentage = 100;
+      } else if (taskSubtasks.length > 0) {
+        // If task has subtasks, show percentage based on completed subtasks
         const completedSubtasks = taskSubtasks.filter(st => st.completed).length;
         completionPercentage = Math.round((completedSubtasks / taskSubtasks.length) * 100);
+      } else {
+        // For tasks without subtasks that are not completed, show 0%
+        completionPercentage = 0;
       }
 
       return {

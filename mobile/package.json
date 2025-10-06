@@ -1,7 +1,7 @@
 {
   "name": "taskly",
   "main": "expo-router/entry",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "scripts": {
     "dev": "expo start -c",
     "android": "expo start -c --android",
@@ -38,6 +38,7 @@
     "@rn-primitives/tooltip": "^1.2.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
+    "date-fns": "^4.1.0",
     "drizzle-kit": "^0.18.1",
     "drizzle-orm": "^0.44.5",
     "expo": "^53.0.19",
